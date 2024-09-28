@@ -1,8 +1,6 @@
 package com.example.Fase2.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Address {
+public class Address extends Person{
 
-    @OneToOne(mappedBy =  "address")
+    @Id
+    private Long id;
+
+    @OneToOne(mappedBy = "address")
     private Guest guest;
 
     @Column(nullable = true)
@@ -29,5 +30,6 @@ public class Address {
 
     @Column(nullable = true)
     private String street; // Rua
-
 }
+
+

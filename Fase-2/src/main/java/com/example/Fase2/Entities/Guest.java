@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,13 +13,12 @@ import java.time.LocalDate;
 @Entity
 public class Guest extends Person {
 
-
     @Column(nullable = true)
     private String contactNumber; // Número de contato
 
-
     @OneToOne
-    @JoinColumn(name = "Address")
+    @MapsId // Esta anotação vincula o ID do Guest ao ID do Address
+    @JoinColumn(name = "id") // A coluna 'id' será usada como chave estrangeira
     private Address address; // Endereço
-
 }
+

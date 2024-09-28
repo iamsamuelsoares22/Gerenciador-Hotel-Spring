@@ -12,6 +12,5 @@ public class Fase2Application {
 	public static void main(String[] args) {
 
 		SpringApplication.run(Fase2Application.class, args);
-
 	}
 }

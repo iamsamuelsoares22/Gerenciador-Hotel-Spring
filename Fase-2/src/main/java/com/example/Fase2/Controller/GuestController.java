@@ -21,7 +21,7 @@ public class GuestController {
     }
 
     @PostMapping
-    public ResponseEntity<Guest> saveAluno(@RequestBody GuestRecordDTO guestRecordDTO) {
+    public ResponseEntity<Guest> saveGuest(@RequestBody GuestRecordDTO guestRecordDTO) {
         Guest guest = guestService.saveGuest(guestRecordDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(guest);
     }
