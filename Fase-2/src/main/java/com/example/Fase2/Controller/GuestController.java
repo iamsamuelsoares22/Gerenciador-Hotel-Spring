@@ -3,7 +3,9 @@ package com.example.Fase2.Controller;
 import com.example.Fase2.DTO.GuestRecordDTO;
 import com.example.Fase2.Entities.Guest;
 import com.example.Fase2.Services.GuestService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,6 +37,13 @@ public class GuestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(guest);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Object>> getAllGuets(){
+        List<Object> guests = Collections.singletonList(guestService.getAllGuests());
+        return ResponseEntity.ok(guests);
+    }
+
+
 
 
 
@@ -41,7 +52,6 @@ public class GuestController {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
-
 
     // Manipulador de exceções para validação de CPF e outros campos
     @ExceptionHandler(MethodArgumentNotValidException.class)

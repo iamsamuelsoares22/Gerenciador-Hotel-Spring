@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public record GuestRecordDTO(
 
-        @NotNull(message = "CPF é obrigatório")
+        Long id, @NotNull(message = "CPF é obrigatório")
         @Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números")
         @Size(min = 11, max = 11, message = "O CPF deve conter 11 números")
         String cpf,
@@ -20,6 +20,5 @@ public record GuestRecordDTO(
 
         String contactNumber,
 
-        @NotNull(message = "Endereço é obrigatório.")
         AddressRecordDTO address
 ) {}

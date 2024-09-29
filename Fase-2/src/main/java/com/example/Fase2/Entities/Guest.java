@@ -1,5 +1,6 @@
 package com.example.Fase2.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +18,7 @@ public class Guest extends Person {
     private String contactNumber; // Número de contato
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @JsonManagedReference
     private Address address; // Endereço
 }
 
