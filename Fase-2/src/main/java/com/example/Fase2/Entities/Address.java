@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Address extends Person{
+public class Address{
 
     @Id
     private Long id;

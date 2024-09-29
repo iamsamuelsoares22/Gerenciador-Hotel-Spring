@@ -9,6 +9,8 @@ import com.example.Fase2.Repository.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GuestService {
 
@@ -22,25 +24,33 @@ public class GuestService {
     }
 
     public Guest saveGuest(GuestRecordDTO guestRecordDTO) {
-        Guest guest = new Guest();
-        Address address = new Address();
 
-        guest.setCpf(guestRecordDTO.cpf());
-        guest.setName(guestRecordDTO.name());
-        guest.setBirthDate(guestRecordDTO.birthDate());
-        guest.setContactNumber(guestRecordDTO.contactNumber());
+        // Verifica se já existe um hóspede com o mesmo CPF
+        Optional<Guest> existingGuest = guestRepository.findByCpf(guestRecordDTO.cpf());
 
-        // Defina os valores do endereço
-        address.setZipCode(guestRecordDTO.address().zipCode());
-        address.setCountry(guestRecordDTO.address().country());
-        address.setNeighborhood(guestRecordDTO.address().neighborhood());
-        address.setStreet(guestRecordDTO.address().street());
+        if (existingGuest.isPresent()) {
+            throw new IllegalArgumentException("Já existe um hóspede com esse cpf: " + guestRecordDTO.cpf());
+        }
+        else{
+            Guest guest = new Guest();
+            Address address = new Address();
 
-        // Salve o endereço primeiro
-        Address savedAddress = addressRepository.save(address);
-        guest.setAddress(savedAddress); // Depois atribua o endereço salvo ao hóspede
+            guest.setCpf(guestRecordDTO.cpf());
+            guest.setName(guestRecordDTO.name());
+            guest.setBirthDate(guestRecordDTO.birthDate());
+            guest.setContactNumber(guestRecordDTO.contactNumber());
 
-        return guestRepository.save(guest);
+            address.setZipCode(guestRecordDTO.address().zipCode());
+            address.setCountry(guestRecordDTO.address().country());
+            address.setNeighborhood(guestRecordDTO.address().neighborhood());
+            address.setStreet(guestRecordDTO.address().street());
+
+
+            Address savedAddress = addressRepository.save(address);
+            guest.setAddress(savedAddress);
+
+            return guestRepository.save(guest);
+        }
     }
 
 }
