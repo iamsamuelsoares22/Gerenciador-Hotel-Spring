@@ -1,5 +1,6 @@
 package com.example.Fase2.Controller;
 
+import com.example.Fase2.DTO.CpfRequestDTO;
 import com.example.Fase2.DTO.GuestRecordDTO;
 import com.example.Fase2.Entities.Guest;
 import com.example.Fase2.Services.GuestService;
@@ -13,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/guests")
@@ -41,6 +39,23 @@ public class GuestController {
     public ResponseEntity<List<Object>> getAllGuets(){
         List<Object> guests = Collections.singletonList(guestService.getAllGuests());
         return ResponseEntity.ok(guests);
+    }
+
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<GuestRecordDTO> getGuestByCpf(@PathVariable String cpf) {
+        Optional<Guest> guest = guestService.getGuestByCpf(cpf);
+        return guest.map(g -> ResponseEntity.ok(guestService.mapToGuestRecordDTO(g)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteGuestByCpf(@RequestBody CpfRequestDTO cpfRequest) {
+        try {
+            guestService.deleteGuestByCpf(cpfRequest.getCpf());
+            return ResponseEntity.noContent().build(); // Retorna 204 No Content
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.notFound().build(); // Retorna 404 Not Found se não existir
+        }
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -57,10 +58,26 @@ public class GuestService {
         }
     }
 
+
+
     public List<GuestRecordDTO> getAllGuests() {
         return guestRepository.findAll().stream()
                 .map(this::mapToGuestRecordDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Guest> getGuestByCpf(String cpf) {
+        return guestRepository.findByCpf(cpf);
+    }
+
+
+
+    public void deleteGuestByCpf(String cpf) {
+        Optional<Guest> guest = guestRepository.findByCpf(cpf);
+        if (guest.isEmpty()) {
+            throw new NoSuchElementException("Não existe nenhum guest com esse cpf: " + cpf);
+        }
+        guestRepository.delete(guest.orElse(null));
     }
 
 
@@ -76,8 +93,7 @@ public class GuestService {
 
 
 
-
-    private GuestRecordDTO mapToGuestRecordDTO(Guest guest) {
+    public GuestRecordDTO mapToGuestRecordDTO(Guest guest) {
         return new GuestRecordDTO(
                 guest.getId(),
                 guest.getName(),
@@ -98,6 +114,4 @@ public class GuestService {
                 address.getStreet()
         );
     }
-
-
 }

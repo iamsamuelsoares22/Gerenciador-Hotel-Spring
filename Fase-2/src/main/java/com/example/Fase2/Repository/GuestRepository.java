@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
-    //Verifica se existe um cpf cadastrado
+    //Lista por CPF
     Optional<Guest> findByCpf(String cpf);
+
+    //Deletar por CPF
+    void delete(Guest guest);
 }
