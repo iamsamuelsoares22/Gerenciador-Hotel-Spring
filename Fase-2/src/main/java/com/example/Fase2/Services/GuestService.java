@@ -1,7 +1,7 @@
 package com.example.Fase2.Services;
 
-import com.example.Fase2.DTO.AddressRecordDTO;
-import com.example.Fase2.DTO.GuestRecordDTO;
+import com.example.Fase2.DTO.GuestDTO.AddressRecordDTO;
+import com.example.Fase2.DTO.GuestDTO.GuestRecordDTO;
 import com.example.Fase2.Entities.Address;
 import com.example.Fase2.Entities.Guest;
 import com.example.Fase2.Repository.AddressRepository;
@@ -70,6 +70,35 @@ public class GuestService {
         return guestRepository.findByCpf(cpf);
     }
 
+    public Guest updateGuestByCpf(String cpf, GuestRecordDTO guestRecordDTO) {
+
+        Optional<Guest> existingGuest = guestRepository.findByCpf(guestRecordDTO.cpf());
+
+        if(existingGuest.isPresent()){
+            Guest guest = guestRepository.findByCpf(cpf).orElseThrow(() ->
+                    new NoSuchElementException("Não existe nenhum hóspede com esse cpf: " + cpf));
+
+
+            guest.setName(guestRecordDTO.name());
+            guest.setBirthDate(guestRecordDTO.birthDate());
+            guest.setContactNumber(guestRecordDTO.contactNumber());
+
+            if (guest.getAddress() != null && guestRecordDTO.address() != null) {
+                Address address = guest.getAddress();
+                address.setZipCode(guestRecordDTO.address().zipCode());
+                address.setCountry(guestRecordDTO.address().country());
+                address.setNeighborhood(guestRecordDTO.address().neighborhood());
+                address.setStreet(guestRecordDTO.address().street());
+
+                addressRepository.save(address);
+            }
+
+            return guestRepository.save(guest);
+        }
+        else{
+            return null;
+        }
+    }
 
 
     public void deleteGuestByCpf(String cpf) {

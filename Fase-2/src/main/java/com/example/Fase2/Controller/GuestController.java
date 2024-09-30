@@ -1,7 +1,7 @@
 package com.example.Fase2.Controller;
 
 import com.example.Fase2.DTO.CpfRequestDTO;
-import com.example.Fase2.DTO.GuestRecordDTO;
+import com.example.Fase2.DTO.GuestDTO.GuestRecordDTO;
 import com.example.Fase2.Entities.Guest;
 import com.example.Fase2.Services.GuestService;
 
@@ -35,11 +35,20 @@ public class GuestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(guest);
     }
 
+
+    @PutMapping("/{cpf}")
+    public ResponseEntity<Guest> updateGuestByCpf(@PathVariable String cpf, @RequestBody GuestRecordDTO guestRecordDTO) {
+        Guest updatedGuest = guestService.updateGuestByCpf(cpf, guestRecordDTO);
+        return ResponseEntity.ok(updatedGuest);
+    }
+
+
     @GetMapping
     public ResponseEntity<List<Object>> getAllGuets(){
         List<Object> guests = Collections.singletonList(guestService.getAllGuests());
         return ResponseEntity.ok(guests);
     }
+
 
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<GuestRecordDTO> getGuestByCpf(@PathVariable String cpf) {
@@ -47,6 +56,7 @@ public class GuestController {
         return guest.map(g -> ResponseEntity.ok(guestService.mapToGuestRecordDTO(g)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
+
 
     @DeleteMapping
     public ResponseEntity<Void> deleteGuestByCpf(@RequestBody CpfRequestDTO cpfRequest) {

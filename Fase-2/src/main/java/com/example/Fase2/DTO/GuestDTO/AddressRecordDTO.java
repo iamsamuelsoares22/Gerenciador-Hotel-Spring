@@ -1,4 +1,4 @@
-package com.example.Fase2.DTO;
+package com.example.Fase2.DTO.GuestDTO;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
