@@ -20,6 +20,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String isAvailable; // Disponibilidade do quarto
     private int roomNumber; // Número do quarto
     private String type; // Tipo do quarto
     private int capacity; // Capacidade de pessoas

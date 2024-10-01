@@ -5,9 +5,14 @@ import com.example.Fase2.Entities.Employee;
 import com.example.Fase2.Repository.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+
+@Service
 public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
@@ -39,6 +44,27 @@ public class EmployeeService {
     }
 
 
+    public List<EmployeeRecordDTO> getAllEmployee(){
+        return  employeeRepository.findAll().stream().map(this::mapToEmployeeRecordDTO).collect(Collectors.toList());
+    }
 
+
+
+
+
+
+
+
+    private EmployeeRecordDTO mapToEmployeeRecordDTO(Employee employee){
+        return new EmployeeRecordDTO(
+
+                employee.getId(),
+                employee.getCpf(),
+                employee.getName(),
+                employee.getPosition(),
+                employee.getSalary(),
+                employee.getShift()
+        );
+    }
 
 }

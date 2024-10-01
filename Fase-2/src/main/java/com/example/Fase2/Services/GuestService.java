@@ -61,9 +61,7 @@ public class GuestService {
 
 
     public List<GuestRecordDTO> getAllGuests() {
-        return guestRepository.findAll().stream()
-                .map(this::mapToGuestRecordDTO)
-                .collect(Collectors.toList());
+        return guestRepository.findAll().stream().map(this::mapToGuestRecordDTO).collect(Collectors.toList());
     }
 
     public Optional<Guest> getGuestByCpf(String cpf) {

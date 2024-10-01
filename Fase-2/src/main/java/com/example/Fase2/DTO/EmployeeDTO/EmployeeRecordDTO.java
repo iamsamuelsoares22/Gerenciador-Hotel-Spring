@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 
 public record EmployeeRecordDTO(
-        @NotNull(message = "CPF é obrigatório")
+        Long id, @NotNull(message = "CPF é obrigatório")
         @Pattern(regexp = "\\d{11}", message = "O CPF deve conter apenas números")
         @Size(min = 11, max = 11, message = "O CPF deve conter 11 números")
         String cpf,
